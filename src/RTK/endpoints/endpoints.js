@@ -1,4 +1,4 @@
-export const BASE_URL = "https://techverse-dtq7.onrender.com";
+export const BASE_URL = "https://techverse-dtq7.onrender.com"; 
 export const UPLOADS_URL = "/api/upload";
 export const PRODUCTS_URL = "/api/products";
 export const USERS_URL = "/api/users";

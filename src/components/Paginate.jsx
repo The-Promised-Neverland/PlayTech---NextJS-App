@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 
 import Link from "next/link";
 import styles from "@/styles/Paginate.module.css"; // Import your custom styles

@@ -1,10 +1,7 @@
 "use client";
 
-
-// we are using javascript here and hence have to render it on client side
-
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "./ReactBootStrap";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,8 +9,21 @@ const Footer = () => {
     <footer>
       <Container>
         <Row>
-          <Col className="text-center">
-            <strong>Techverse &copy; {currentYear}</strong>
+          <Col
+            className="text-center"
+            style={{
+              justifyContent: "center",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+          >
+            <strong>Powered by</strong>
+            <img
+              src="/footer_logo.png"
+              alt="Footer Logo"
+              style={{ width: "70px", height: "auto" }} // Adjust the width as needed
+            />
           </Col>
         </Row>
       </Container>

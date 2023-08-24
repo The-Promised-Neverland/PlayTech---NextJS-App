@@ -1,14 +1,26 @@
-"use client"
+export const revalidate = 0;
 
-import { Carousel, Image } from "react-bootstrap";
+import { productsApi } from "@/RTK/API/productsApi";
+import store from "@/RTK/store/store";
+import {
+  Carousel,
+  Image,
+  CarouselItem,
+  CarouselCaption,
+} from "@/components/ReactBootStrap";
 import Link from "next/link";
 
-const TopProductCarousel = ({ topProducts }) => {
+const TopProductCarousel = async () => {
+  const TopProducts = await store.dispatch(
+    productsApi.endpoints.getTopProducts.initiate(null,{forceRefetch: true})
+  );
+  const topProducts = TopProducts.data;
+
   return (
     // You were missing this return statement
     <Carousel pause="hover" className="bg-primary mb-4">
       {topProducts?.map((product) => (
-        <Carousel.Item key={product._id}>
+        <CarouselItem key={product._id}>
           <Link href={`/product/${product._id}`}>
             <Image
               src={product.image}
@@ -16,16 +28,16 @@ const TopProductCarousel = ({ topProducts }) => {
               className="carousel-image"
               fluid
             />
-            <Carousel.Caption
+            <CarouselCaption
               className="carousel-caption"
               style={{ left: 0, bottom: 0 }}
             >
               <h4 className="text-white text-right" style={{ margin: 0 }}>
                 {product.name} (${product.price})
               </h4>
-            </Carousel.Caption>
+            </CarouselCaption>
           </Link>
-        </Carousel.Item>
+        </CarouselItem>
       ))}
     </Carousel>
   );
