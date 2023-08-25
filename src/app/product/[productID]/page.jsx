@@ -1,5 +1,3 @@
-export const revalidate = 0;
-
 import React from "react";
 import Rating from "@/components/Rating";
 import {
@@ -8,32 +6,28 @@ import {
   Image,
   ListGroup,
   Card,
-  Button,
   ListGroupItem,
 } from "@/components/ReactBootStrap";
 import Link from "next/link";
-import store from "@/RTK/store/store";
-import { productsApi } from "@/RTK/API/productsApi";
 import ShowReviews from "@/components/ShowReviews";
 import ReviewInput from "@/components/ReviewInput";
-import Message from "@/components/Message";
-import QtySelector from "@/components/QtySelector";
+import AddToCart from "@/components/AddToCart";
+
+const fetchProductDetail = async (productID) => {
+  const data = await fetch(
+    `https://techverse-dtq7.onrender.com/api/products/${productID}`,
+    {
+      next: { revalidate: 5 },
+    }
+  );
+  const res = await data.json();
+  return res;
+};
 
 const ProductScreen = async ({ params }) => {
   const productID = params.productID;
 
-  const userInfo = store.getState();
-  
-
-  console.log({userInfo})
-
-  const { data: productData } = await store.dispatch(
-    productsApi.endpoints.getProductsDetails.initiate(productID, {
-      forceRefetch: true,
-    })
-  );
-
-  const addToCartHandler = () => {};
+  const productData = await fetchProductDetail(productID);
 
   return (
     <>
@@ -92,37 +86,11 @@ const ProductScreen = async ({ params }) => {
                     </Col>
                   </Row>
                 </ListGroupItem>
-                {productData.countInStock > 0 && (
-                  <ListGroupItem>
-                    <Row>
-                      <Col style={{ alignItems: "center", display: "flex" }}>
-                        Qty
-                      </Col>
-                      <Col>
-                        <QtySelector countInStock={productData.countInStock} />
-                      </Col>
-                    </Row>
-                  </ListGroupItem>
-                )}
-                {userInfo && userInfo.isAdmin === false && (
-                  <ListGroupItem
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
-                    {productData.countInStock > 0 ? (
-                      <Button
-                        className="btn-block"
-                        type="button"
-                        onClick={addToCartHandler}
-                      >
-                        Add to Cart
-                      </Button>
-                    ) : (
-                      <span>
-                        <strong>It's dry out here!</strong>
-                      </span>
-                    )}
-                  </ListGroupItem>
-                )}
+
+                <AddToCart
+                  countInStock={productData.countInStock}
+                  product={productData}
+                />
               </ListGroup>
             </Card>
           </Col>
@@ -131,9 +99,8 @@ const ProductScreen = async ({ params }) => {
         <Row className="review">
           <Col md={6}>
             <h2>Reviews</h2>
-            {productData.reviews.length === 0 && <Message>No Reviews</Message>}
             <ListGroup variant="flush">
-              <ShowReviews reviews={productData.reviews} />
+              <ShowReviews productID={productID} />
 
               <ReviewInput productId={productID} />
             </ListGroup>

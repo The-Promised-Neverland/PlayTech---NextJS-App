@@ -1,34 +1,26 @@
-export const revalidate = 0;
-
 import React from "react";
 import { Row, Col } from "@/components/ReactBootStrap";
 import Product from "@/components/Product";
-import { productsApi } from "@/RTK/API/productsApi";
 import Paginate from "@/components/Paginate";
-import store from "@/RTK/store/store";
 import TopProductCarousel from "@/components/TopProductCarousel";
 
+const fetchAllProducts = async () => {
+  const data = await fetch("https://techverse-dtq7.onrender.com/api/products", {
+    next: { revalidate: 3 },
+  });
+  const res = await data.json();
+  return res;
+};
+
 const HomeScreen = async () => {
-  const Products = await store.dispatch(
-    productsApi.endpoints.getProducts.initiate(
-      {
-        keyword: "",
-        pageNumber: 0,
-      },
-      { forceRefetch: true }
-    )
-  );
-
-  const products = Products.data.products;
-  const pages = Products.data.pages;
-  const page = Products.data.page;
-
+  const { products, pages, page } = await fetchAllProducts();
   return (
     <>
       <TopProductCarousel />
       <h1 style={{ display: "flex", justifyContent: "center" }}>
         Latest Products
       </h1>
+      {products.length === 0 && <strong>No Products</strong>}
       <Row>
         {products?.map((product) => {
           return (

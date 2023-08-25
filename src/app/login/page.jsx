@@ -4,18 +4,31 @@ import { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Spinner } from "@/components/ReactBootStrap";
 import FormContainer from "@/components/FormContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "@/RTK/API/usersApi";
-import { setCredentialsLocal } from "@/RTK/redux/auth";
+import { setCredentialsLocal } from "@/RTK/slices/auth";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
+const login = async (email, password) => {
+  const data = await fetch(
+    "https://techverse-dtq7.onrender.com/api/users/login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }
+  );
+  const res = await data.json();
+  return res;
+};
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loggingIn, setLoggingIn] = useState(false);
   const dispatch = useDispatch();
-
-  const [login, { isLoading }] = useLoginMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -33,11 +46,14 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password }).unwrap();
+      setLoggingIn(true);
+      const res = await login(email, password);
       dispatch(setCredentialsLocal({ ...res }));
       router.push(redirect);
     } catch (error) {
       toast.error(error?.data?.message || error.error);
+    } finally {
+      setLoggingIn(false);
     }
   };
 
@@ -70,9 +86,9 @@ const Login = () => {
           type="submit"
           variant="primary"
           className="mt-2"
-          disabled={isLoading}
+          disabled={loggingIn === true}
         >
-          {isLoading === true && (
+          {loggingIn === true && (
             <Spinner
               as="span"
               animation="grow"

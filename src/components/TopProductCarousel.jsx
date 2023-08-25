@@ -1,7 +1,3 @@
-export const revalidate = 0;
-
-import { productsApi } from "@/RTK/API/productsApi";
-import store from "@/RTK/store/store";
 import {
   Carousel,
   Image,
@@ -10,14 +6,21 @@ import {
 } from "@/components/ReactBootStrap";
 import Link from "next/link";
 
-const TopProductCarousel = async () => {
-  const TopProducts = await store.dispatch(
-    productsApi.endpoints.getTopProducts.initiate(null,{forceRefetch: true})
+const fetchTopProducts = async () => {
+  const data = await fetch(
+    "https://techverse-dtq7.onrender.com/api/products/top",
+    {
+      next: { revalidate: 3 },
+    }
   );
-  const topProducts = TopProducts.data;
+  const res = await data.json();
+  return res;
+};
+
+const TopProductCarousel = async () => {
+  const topProducts = await fetchTopProducts();
 
   return (
-    // You were missing this return statement
     <Carousel pause="hover" className="bg-primary mb-4">
       {topProducts?.map((product) => (
         <CarouselItem key={product._id}>

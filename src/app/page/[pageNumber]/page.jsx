@@ -1,38 +1,28 @@
-export const revalidate = 0; // otherwise nextjs will just cache the data and would not let the
-
 import React from "react";
 import { Row, Col } from "@/components/ReactBootStrap";
 import Product from "@/components/Product";
-import { productsApi } from "@/RTK/API/productsApi";
 import Paginate from "@/components/Paginate";
-import store from "@/RTK/store/store";
 import TopProductCarousel from "@/components/TopProductCarousel";
 
-const HomeScreen = async ({ params }) => {
-  const pageNumber = parseInt(params.pageNumber);
+const fetchAllProducts = async (pageNumber, keyword="") => {
+  const url = `https://techverse-dtq7.onrender.com/api/products?keyword=${encodeURIComponent(
+    keyword
+  )}&pageNumber=${pageNumber}`;
+  const data = await fetch(url);
+  const res=await data.json();
+  return res;
+};
 
-  const Products = await store.dispatch(
-    productsApi.endpoints.getProducts.initiate({
-      keyword: "",
-      pageNumber,
-    })
-  );
-
-  const TopProducts = await store.dispatch(
-    productsApi.endpoints.getTopProducts.initiate()
-  );
-
-  const products = Products.data.products;
-  const pages = Products.data.pages;
-  const page = Products.data.page;
-  const topProducts = TopProducts.data;
-
+const HomeScreen = async ({params}) => {
+  const pageNumber=params.pageNumber;
+  const { products, pages, page } = await fetchAllProducts(pageNumber);
   return (
     <>
-      <TopProductCarousel topProducts={topProducts} />
+      <TopProductCarousel />
       <h1 style={{ display: "flex", justifyContent: "center" }}>
         Latest Products
       </h1>
+      {products.length === 0 && <strong>No Products</strong>}
       <Row>
         {products?.map((product) => {
           return (

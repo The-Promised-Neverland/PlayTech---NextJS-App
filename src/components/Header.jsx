@@ -3,34 +3,32 @@
 import { Badge, Navbar, Nav, Container, NavDropdown } from "./ReactBootStrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "@/RTK/API/usersApi";
-import { loadCredentials, logoutLocal } from "@/RTK/redux/auth";
+import { logoutLocal } from "@/RTK/slices/auth";
 import SearchBox from "./SearchBox";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect } from "react";
+
+const logout = async () => {
+  await fetch("https://techverse-dtq7.onrender.com/api/users/logout", {
+    credentials: "include",
+  });
+};
 
 const Header = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadCredentials());
-  }, []);
-
   const router = useRouter();
 
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const [logout] = useLogoutMutation();
   const logoutHandler = async () => {
     try {
-      await logout().unwrap();
+      await logout();
       dispatch(logoutLocal());
       router.push("/login");
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
 
   return (
@@ -41,7 +39,7 @@ const Header = () => {
         >
           <Link href="/" style={{ textDecoration: "none", display: "flex" }}>
             <Navbar.Brand>
-              <div>Techverse</div>
+              <div>PlayTech</div>
               {userInfo && userInfo.isAdmin && (
                 <div
                   style={{

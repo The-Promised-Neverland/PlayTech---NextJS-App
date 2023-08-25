@@ -29,11 +29,7 @@ const updateCart = (state) => {
   return state;
 };
 
-
-
-
 // --------------x----------------------------x----------------------------x--------------------------------x------------------------------x--------------------
-
 
 const initialState = {
   cartItems: [],
@@ -45,8 +41,8 @@ const cart = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    loadCart: (state, action) => {
-      const cartLoad = JSON.parse(action.payload);
+    loadCartCredentials: (state, action) => {
+      const cartLoad = JSON.parse(localStorage.getItem("cart"));
       state.cartItems = cartLoad.cartItems;
       state.shippingAddress = cartLoad.shippingAddress;
       state.paymentMethod = cartLoad.paymentMethod;
@@ -93,7 +89,7 @@ export const {
   saveShippingAddrress,
   savePaymentMethod,
   clearCartitems,
-  loadCart,
+  loadCartCredentials,
 } = cart.actions;
 
 export default cart.reducer;
