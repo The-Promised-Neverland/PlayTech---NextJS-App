@@ -42,10 +42,12 @@ const cart = createSlice({
   initialState,
   reducers: {
     loadCartCredentials: (state, action) => {
-      const cartLoad = JSON.parse(localStorage.getItem("cart"));
-      state.cartItems = cartLoad.cartItems;
-      state.shippingAddress = cartLoad.shippingAddress;
-      state.paymentMethod = cartLoad.paymentMethod;
+      if (localStorage.getItem("cart")) {
+        const cartLoad = JSON.parse(localStorage.getItem("cart"));
+        state.cartItems = cartLoad.cartItems;
+        state.shippingAddress = cartLoad.shippingAddress;
+        state.paymentMethod = cartLoad.paymentMethod;
+      }
     },
     addToCart: (state, action) => {
       const item = action.payload;
