@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import Link from "next/link";
-import styles from "@/styles/Paginate.module.css"; // Import your custom styles
+import styles from "@/styles/paginate.module.css"; // Import your custom styles
 
 const Paginate = ({ pages, page, isAdmin = false, keyword = "" }) => {
   const pageNumbers = [...Array(pages).keys()].map((x) => x + 1);
