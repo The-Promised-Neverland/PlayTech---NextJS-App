@@ -17,7 +17,7 @@ const fetchProductDetail = async (productID) => {
   const data = await fetch(
     `https://techverse-dtq7.onrender.com/api/products/${productID}`,
     {
-      next: { revalidate: 5 },
+      next: { revalidate: 10 },
     }
   );
   const res = await data.json();
@@ -100,7 +100,7 @@ const ProductScreen = async ({ params }) => {
           <Col md={6}>
             <h2>Reviews</h2>
             <ListGroup variant="flush">
-              <ShowReviews productID={productID} />
+              <ShowReviews productID={productID}  />
 
               <ReviewInput productId={productID} />
             </ListGroup>

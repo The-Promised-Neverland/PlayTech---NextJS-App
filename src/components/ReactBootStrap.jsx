@@ -16,7 +16,8 @@ import {
   Form,
   Alert,
   Button,
-  Spinner
+  Spinner,
+  Table,
 } from "react-bootstrap";
 
 const { Item: CarouselItem, Caption: CarouselCaption } = Carousel;
@@ -27,10 +28,14 @@ const { Item: PaginationItem } = Pagination;
 
 const { Item: ListGroupItem } = ListGroup;
 
+const { Item: NavDropdownItem } = NavDropdown;
+
 const { Group: FormGroup, Control: FormControl, Label: FormLabel } = Form;
 
 // Export the imported components
 export {
+  NavDropdownItem,
+  Table,
   Spinner,
   Alert,
   Form,

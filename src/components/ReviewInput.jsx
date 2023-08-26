@@ -20,7 +20,7 @@ const ReviewInput = ({ productId }) => {
 
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
-  const [postingReview, setPostingReview]=useState(false);
+  const [postingReview, setPostingReview] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -28,21 +28,24 @@ const ReviewInput = ({ productId }) => {
     e.preventDefault();
     try {
       setPostingReview(true);
-      await fetch(`https://techverse-dtq7.onrender.com/api/products/${productId}/reviews`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({rating,comment}),
-      });
+      await fetch(
+        `https://techverse-dtq7.onrender.com/api/products/${productId}/reviews`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ rating, comment }),
+        }
+      );
       router.refresh();
       setRating(0);
       setComment("");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     } finally {
-      setPostingReview(false)
+      setPostingReview(false);
     }
   };
 

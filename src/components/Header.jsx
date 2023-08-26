@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, Navbar, Nav, Container, NavDropdown } from "./ReactBootStrap";
+import { Badge, Navbar, Nav, Container, NavDropdown, NavDropdownItem } from "./ReactBootStrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutLocal } from "@/RTK/slices/auth";
@@ -65,10 +65,10 @@ const Header = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    
                     textDecoration: "none",
                   }}
                 >
-                  <Nav.Link>
                     <FaShoppingCart />
                     Cart
                     {cartItems.length > 0 && (
@@ -76,7 +76,6 @@ const Header = () => {
                         {cartItems.reduce((a, c) => a + c.qty, 0)}
                       </Badge>
                     )}
-                  </Nav.Link>
                 </Link>
               )}
               {userInfo ? (
@@ -85,15 +84,15 @@ const Header = () => {
                   id="username"
                   style={{ display: "flex", alignItems: "center" }}
                 >
-                  <Link
+                  {/* <Link
                     href="/profile"
                     style={{ display: "flex", textDecoration: "none" }}
-                  >
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
-                  </Link>
-                  <NavDropdown.Item onClick={logoutHandler}>
+                  > */}
+                    <NavDropdownItem as={Link} href="/profile">Profile</NavDropdownItem>
+                  {/* </Link> */}
+                  <NavDropdownItem onClick={logoutHandler}>
                     Logout
-                  </NavDropdown.Item>
+                  </NavDropdownItem>
                 </NavDropdown>
               ) : (
                 <Link
