@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const logout = async () => {
   await fetch("https://techverse-dtq7.onrender.com/api/users/logout", {
-    credentials: "include",
+    credentials: "include"
   });
 };
 
@@ -20,6 +20,7 @@ const Header = () => {
 
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
+  console.log({userInfo})
 
   const logoutHandler = async () => {
     try {

@@ -17,6 +17,7 @@ const login = async (email, password) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",  // stores the cookies sent from browser
       body: JSON.stringify({ email, password }),
     }
   );

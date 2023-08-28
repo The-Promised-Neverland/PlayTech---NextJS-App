@@ -1,5 +1,11 @@
 import React from "react";
-import { Card, CardBody, CardImg, CardText, CardTitle } from "@/components/ReactBootStrap";
+import {
+  Card,
+  CardBody,
+  CardImg,
+  CardText,
+  CardTitle,
+} from "@/components/ReactBootStrap";
 import Rating from "./Rating";
 import Link from "next/link";
 

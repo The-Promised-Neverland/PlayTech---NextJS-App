@@ -7,11 +7,8 @@ import { useEffect } from "react";
 import { loadCartCredentials } from "../slices/cart";
 
 const MyStoreProvider = ({ children }) => {
-  //after component loads reading localstorage
-  useEffect(() => {
-    store.dispatch(loadUserCredentials());
-    store.dispatch(loadCartCredentials());
-  }, []);
+  store.dispatch(loadUserCredentials());
+  store.dispatch(loadCartCredentials());
 
   return <Provider store={store}>{children}</Provider>;
 };

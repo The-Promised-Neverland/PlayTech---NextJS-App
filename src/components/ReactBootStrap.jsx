@@ -18,8 +18,10 @@ import {
   Button,
   Spinner,
   Table,
+  Placeholder
 } from "react-bootstrap";
 
+const {Image: PlaceholderImage}=Placeholder;
 const { Item: CarouselItem, Caption: CarouselCaption } = Carousel;
 
 const { Img: CardImg, Body: CardBody, Title: CardTitle, Text: CardText } = Card;
@@ -34,6 +36,7 @@ const { Group: FormGroup, Control: FormControl, Label: FormLabel } = Form;
 
 // Export the imported components
 export {
+  PlaceholderImage,
   NavDropdownItem,
   Table,
   Spinner,
@@ -63,4 +66,5 @@ export {
   CardBody,
   Button,
   CardTitle,
+  Placeholder,
 };
