@@ -29,7 +29,7 @@ const UpdateUser = () => {
       setName(userInfo.name);
       setEmail(userInfo.email);
     }
-  }, [userInfo, userInfo.name, userInfo.email]);
+  }, [userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
