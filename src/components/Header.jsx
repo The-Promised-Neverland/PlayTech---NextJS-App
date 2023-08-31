@@ -1,28 +1,33 @@
 "use client";
 
-import { Badge, Navbar, Nav, Container, NavDropdown, NavDropdownItem } from "./ReactBootStrap";
+import {
+  Badge,
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  NavDropdownItem,
+} from "./ReactBootStrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-// import { useSelector, useDispatch } from "react-redux";
 import { logoutLocal } from "@/RTK/slices/auth";
 import SearchBox from "./SearchBox";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const logout = async () => {
   await fetch("https://techverse-dtq7.onrender.com/api/users/logout", {
-    credentials: "include"
+    method: "POST",
+    credentials: "include",
   });
 };
 
 const Header = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
-  console.log({userInfo})
-
 
   const logoutHandler = async () => {
     try {
@@ -68,17 +73,17 @@ const Header = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    
+
                     textDecoration: "none",
                   }}
                 >
-                    <FaShoppingCart />
-                    Cart
-                    {cartItems.length > 0 && (
-                      <Badge pill bg="success" style={{ marginLeft: "5px" }}>
-                        {cartItems.reduce((a, c) => a + c.qty, 0)}
-                      </Badge>
-                    )}
+                  <FaShoppingCart />
+                  Cart
+                  {cartItems.length > 0 && (
+                    <Badge pill bg="success" style={{ marginLeft: "5px" }}>
+                      {cartItems.reduce((a, c) => a + c.qty, 0)}
+                    </Badge>
+                  )}
                 </Link>
               )}
               {userInfo ? (
@@ -91,7 +96,9 @@ const Header = () => {
                     href="/profile"
                     style={{ display: "flex", textDecoration: "none" }}
                   > */}
-                    <NavDropdownItem as={Link} href="/profile">Profile</NavDropdownItem>
+                  <NavDropdownItem as={Link} href="/profile">
+                    Profile
+                  </NavDropdownItem>
                   {/* </Link> */}
                   <NavDropdownItem onClick={logoutHandler}>
                     Logout

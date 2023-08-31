@@ -16,13 +16,12 @@ const auth = createSlice({
       Cookies.set("userInfo", JSON.stringify(action.payload));
     },
     logoutLocal: (state, action) => {
-      state.userInfo = null;
       Cookies.remove("userInfo");
+      state.userInfo = null;
     },
   },
 });
 
-export const { setCredentialsLocal, logoutLocal, loadUserCredentials } =
-  auth.actions;
+export const { setCredentialsLocal, logoutLocal } = auth.actions;
 
 export default auth.reducer;

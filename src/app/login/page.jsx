@@ -49,6 +49,7 @@ const Login = () => {
     try {
       setLoggingIn(true);
       const res = await login(email, password);
+      console.log(userInfo, {...res})
       dispatch(setCredentialsLocal({ ...res }));
       router.push(redirect);
     } catch (error) {
