@@ -42,7 +42,7 @@ const Login = () => {
     if (userInfo) {
       router.push(redirect);
     }
-  }, [userInfo, redirect]);
+  }, [userInfo, redirect, router]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
