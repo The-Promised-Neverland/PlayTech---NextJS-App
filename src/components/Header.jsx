@@ -2,11 +2,12 @@
 
 import { Badge, Navbar, Nav, Container, NavDropdown, NavDropdownItem } from "./ReactBootStrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 import { logoutLocal } from "@/RTK/slices/auth";
 import SearchBox from "./SearchBox";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const logout = async () => {
   await fetch("https://techverse-dtq7.onrender.com/api/users/logout", {
@@ -15,12 +16,13 @@ const logout = async () => {
 };
 
 const Header = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const router = useRouter();
 
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
   console.log({userInfo})
+
 
   const logoutHandler = async () => {
     try {
