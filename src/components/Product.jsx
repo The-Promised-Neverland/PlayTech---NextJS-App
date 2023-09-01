@@ -13,7 +13,7 @@ const Product = ({ product }) => {
   return (
     <Link href={`/product/${product._id}`} style={{ textDecoration: "none" }}>
       <Card className="my-3 p-3 rounded text-center mx-auto">
-        <CardImg src={product.image} variant="top" />
+        <CardImg src={product.image} variant="top" alt={product.name}/>
         <CardBody>
           <CardTitle as="div" className="product-title">
             <strong style={{ fontSize: "1.2rem" }}>{product.name}</strong>
