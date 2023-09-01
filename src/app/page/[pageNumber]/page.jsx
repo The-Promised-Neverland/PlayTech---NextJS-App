@@ -13,6 +13,51 @@ const fetchAllProducts = async (pageNumber, keyword="") => {
   return res;
 };
 
+export async function generateMetadata({params}) {
+  const pageNumber = params.pageNumber;
+  const { products } = await fetchAllProducts(pageNumber);
+  const productNames = products.map((product) => product.name);
+  return {
+    title: "PlayTech-Technology at Play",
+    description:
+      "Explore the world of cutting-edge technology with PlayTech, an e-commerce platform built using Next.js and React. Dive into a vast array of electronics, gadgets, and top-of-the-line products. Play hard, Play Tech",
+    generator: "Next.js 13",
+    applicationName: "PlayTech",
+    keywords: [
+      "Next.js",
+      "React",
+      "JavaScript",
+      "PlayTech",
+      "e-commerce",
+      "personal-project",
+      "paypal",
+      "stripe",
+      "appleProducts",
+      "apple",
+      "electronics",
+      "gadgets",
+      "topProducts",
+      "play-hard-play-tech",
+      ...productNames,
+    ],
+    authors: [
+      {
+        name: "Abhijit Roy (RainX)",
+        url: [
+          "https://github.com/The-Promised-Neverland",
+          "https://leetcode.com/Decode_Apocalypse/",
+          "https://auth.geeksforgeeks.org/user/rainx",
+          "https://pastebin.com/u/RainX_69",
+        ],
+      },
+    ],
+    creator: "Abhijit Roy (RainX)",
+    icons: {
+      icon: "/playtech.ico",
+    },
+  };
+}
+
 const HomeScreen = async ({params}) => {
   const pageNumber=params.pageNumber;
   const { products, pages, page } = await fetchAllProducts(pageNumber);

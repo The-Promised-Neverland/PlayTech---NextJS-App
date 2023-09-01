@@ -7,6 +7,8 @@ import {
   Container,
   NavDropdown,
   NavDropdownItem,
+  NavbarBrand,
+  NavLink,
 } from "./ReactBootStrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { logoutLocal } from "@/RTK/slices/auth";
@@ -40,13 +42,13 @@ const Header = () => {
   };
 
   return (
-    <header style={{ backgroundColor: "red" }}>
+    <header>
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect fixed="top">
         <Container
           style={{ maxWidth: "inherit", marginLeft: "2%", marginRight: "2%" }}
         >
           <Link href="/" style={{ textDecoration: "none", display: "flex" }}>
-            <Navbar.Brand>
+            <NavbarBrand>
               <div>PlayTech</div>
               {userInfo && userInfo.isAdmin && (
                 <div
@@ -59,7 +61,7 @@ const Header = () => {
                   Admin Mode
                 </div>
               )}
-            </Navbar.Brand>
+            </NavbarBrand>
           </Link>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -68,15 +70,7 @@ const Header = () => {
               <SearchBox />
 
               {userInfo && !userInfo.isAdmin && (
-                <Link
-                  href="/cart"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-
-                    textDecoration: "none",
-                  }}
-                >
+                <NavLink as={Link} href="/cart">
                   <FaShoppingCart />
                   Cart
                   {cartItems.length > 0 && (
@@ -84,22 +78,18 @@ const Header = () => {
                       {cartItems.reduce((a, c) => a + c.qty, 0)}
                     </Badge>
                   )}
-                </Link>
+                </NavLink>
               )}
+
               {userInfo ? (
                 <NavDropdown
                   title={userInfo.name}
                   id="username"
                   style={{ display: "flex", alignItems: "center" }}
                 >
-                  {/* <Link
-                    href="/profile"
-                    style={{ display: "flex", textDecoration: "none" }}
-                  > */}
                   <NavDropdownItem as={Link} href="/profile">
                     Profile
                   </NavDropdownItem>
-                  {/* </Link> */}
                   <NavDropdownItem onClick={logoutHandler}>
                     Logout
                   </NavDropdownItem>

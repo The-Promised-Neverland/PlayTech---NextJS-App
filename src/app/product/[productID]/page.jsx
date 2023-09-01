@@ -24,6 +24,59 @@ const fetchProductDetail = async (productID) => {
   return res;
 };
 
+
+export async function generateMetadata({ params }) {
+  const productID = params.productID;
+
+  const productData = await fetchProductDetail(productID);
+
+  const title = productData.countInStock === 0
+    ? `${productData.name} - Out of Stock`
+    : `${productData.name} - $${productData.price}`;
+
+  return {
+    title,
+    description: productData.description,
+    generator: "Next.js 13",
+    applicationName: "PlayTech",
+    keywords: [
+      "Next.js",
+      "React",
+      "JavaScript",
+      "PlayTech",
+      "e-commerce",
+      "personal-project",
+      "paypal",
+      "stripe",
+      "appleProducts",
+      "apple",
+      "electronics",
+      "gadgets",
+      "topProducts",
+      "play-hard-play-tech",
+      productData.name,
+      `rating-${productData.rating}`,
+      `reviews-${productData.numReviews}`
+    ],
+    authors: [
+      {
+        name: "Abhijit Roy (RainX)",
+        url: [
+          "https://github.com/The-Promised-Neverland",
+          "https://leetcode.com/Decode_Apocalypse/",
+          "https://auth.geeksforgeeks.org/user/rainx",
+          "https://pastebin.com/u/RainX_69",
+        ],
+      },
+    ],
+    creator: "Abhijit Roy (RainX)",
+    icons: {
+      icon: "/playtech.ico",
+    },
+
+  };
+}
+
 const ProductScreen = async ({ params }) => {
   const productID = params.productID;
 
