@@ -1,17 +1,14 @@
-import Logger from '@/components/auth/logger'
-import React from 'react'
-
+import Logger from "@/components/auth/Logger";
+import React from "react";
 
 export const metadata = {
   title: "Login",
   icons: {
-    icon: "/authLogin.ico"
-  }
-}
+    icon: "/authLogin.ico",
+  },
+};
 const Login = () => {
-  return (
-    <Logger />
-  )
-}
+  return <Logger />;
+};
 
-export default Login
+export default Login;
