@@ -40,13 +40,13 @@ const placeOrder = async ({ cart, details }) => {
     },
     credentials: "include",
     body: JSON.stringify({
-      orderItems: cart.cartItems, //array
-      shippingAddress: cart.shippingAddress,
-      paymentMethod: cart.paymentMethod,
-      itemsPrice: cart.itemsPrice,
-      shippingPrice: cart.shippingPrice,
-      taxPrice: cart.taxPrice,
-      totalPrice: cart.totalPrice,
+      orderItems: cart?.cartItems, //array
+      shippingAddress: cart?.shippingAddress,
+      paymentMethod: cart?.paymentMethod,
+      itemsPrice: cart?.itemsPrice,
+      shippingPrice: cart?.shippingPrice,
+      taxPrice: cart?.taxPrice,
+      totalPrice: cart?.totalPrice,
       paymentDetails: details,
     }),
   });
@@ -61,6 +61,7 @@ const PayPalScripter = () => {
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
   const { userInfo } = useSelector((state) => state.auth);
+
   const cart = useSelector((state) => state.cart);
 
   const injectPaypalScript = async () => {
@@ -77,7 +78,7 @@ const PayPalScripter = () => {
   };
 
   useEffect(() => {
-    if (!cart || cart.cartItems.length === 0 || !userInfo) {
+    if (!cart || cart?.cartItems.length === 0 || !userInfo) {
       router.replace("/");
     }
   }, [cart, userInfo]);
@@ -107,7 +108,7 @@ const PayPalScripter = () => {
         purchase_units: [
           {
             amount: {
-              value: cart.totalPrice,
+              value: cart?.totalPrice,
             },
           },
         ],
@@ -130,28 +131,28 @@ const PayPalScripter = () => {
           <ListGroup variant="flush">
             <ListGroupItem>
               <p>
-                <strong>Name: </strong> {userInfo.name}
+                <strong>Name: </strong> {userInfo?.name}
               </p>
               <p>
-                <strong>Email: </strong> {userInfo.email}
+                <strong>Email: </strong> {userInfo?.email}
               </p>
               <p>
                 <strong>Address: </strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
-                {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
+                {cart?.shippingAddress?.address}, {cart?.shippingAddress?.city}{" "}
+                {cart?.shippingAddress?.postalCode},{" "}
+                {cart?.shippingAddress?.country}
               </p>
             </ListGroupItem>
             <ListGroupItem>
               <h2>Payment Gateway</h2>
               <p>
                 <strong>Payment Platform: </strong>
-                {cart.paymentMethod}
+                {cart?.paymentMethod}
               </p>
             </ListGroupItem>
             <ListGroupItem>
               <h2>Order Items</h2>
-              {cart.cartItems.map((item, index) => (
+              {cart?.cartItems?.map((item, index) => (
                 <ListGroupItem key={index} style={{ border: "0px" }}>
                   <Row>
                     <Col
@@ -190,19 +191,19 @@ const PayPalScripter = () => {
               <ListGroupItem>
                 <Row>
                   <Col>MRP</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>${cart?.itemsPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
                   <Col>Shipping Price</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>${cart?.shippingPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
                   <Col>Tax Price</Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>${cart?.taxPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
@@ -210,7 +211,7 @@ const PayPalScripter = () => {
                   <Col>
                     <strong>Final Price</strong>
                   </Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${cart?.totalPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem

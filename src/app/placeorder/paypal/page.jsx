@@ -1,5 +1,5 @@
-import React from 'react'
-import PaypalTemplate from '@/components/gateways/Paypal'
+import React from "react";
+import PaypalTemplate from "@/components/gateways/Paypal";
 
 export const metadata = {
   title: "Paypal",
@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 const PayPal = () => {
-  return <PaypalTemplate />
-}
+  return <PaypalTemplate />;
+};
 
-export default PayPal
+export default PayPal;
