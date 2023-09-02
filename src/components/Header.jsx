@@ -70,7 +70,11 @@ const Header = () => {
               <SearchBox />
 
               {userInfo && !userInfo.isAdmin && (
-                <NavLink as={Link} href="/cart">
+                <NavLink
+                  as={Link}
+                  href="/cart"
+                  style={{ display: "flex", alignItems: "center" }}
+                >
                   <FaShoppingCart />
                   Cart
                   {cartItems.length > 0 && (

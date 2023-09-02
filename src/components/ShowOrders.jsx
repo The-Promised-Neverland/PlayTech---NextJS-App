@@ -1,9 +1,10 @@
 "use client"
 
-import Link from "next/link";
 import { Col, Table, Button } from "./ReactBootStrap";
 import { FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 const fetchUserOrders = async () => {
   const data = await fetch(
@@ -17,7 +18,10 @@ const fetchUserOrders = async () => {
 };
 
 const ShowOrders = () => {
+  const router=useRouter();
+
   const [orders, setOrders] = useState([]);
+
    useEffect(() => {
     const getOrders = async () => {
       const fetchedOrders = await fetchUserOrders();
@@ -128,14 +132,13 @@ const ShowOrders = () => {
                 </div>
               </td>
               <td>
-                <Link
-                  href={`/orderDetails/${order._id}`}
-                  style={{ color: "ghostwhite", textDecoration: "none" }}
+                <Button
+                  className="btn-sm"
+                  variant="dark"
+                  onClick={() => router.push(`/orderDetails/${order._id}`)}
                 >
-                  <Button className="btn-sm" variant="dark">
-                    Details
-                  </Button>
-                </Link>
+                  Details
+                </Button>
               </td>
             </tr>
           ))}

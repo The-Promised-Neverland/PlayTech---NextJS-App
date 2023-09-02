@@ -8,7 +8,7 @@ const fetchAllProducts = async () => {
   const data = await fetch(
     "https://ecommerce-api-l494.onrender.com/api/products",
     {
-      next: { revalidate: 3 },
+      next: { revalidate: 10 },
     }
   );
   const res = await data.json();
