@@ -39,12 +39,12 @@ const UpdateUser = () => {
       try {
         setUpdating(true);
         const res = await fetch(
-          "https://techverse-dtq7.onrender.com/api/users/profile",
+          "https://ecommerce-api-l494.onrender.com/api/users/profile",
           {
             method: "PUT",
             credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ name, email, password }),
           }

@@ -5,9 +5,12 @@ import Paginate from "@/components/Paginate";
 import TopProductCarousel from "@/components/TopProductCarousel";
 
 const fetchAllProducts = async () => {
-  const data = await fetch("https://techverse-dtq7.onrender.com/api/products", {
-    next: { revalidate: 3 },
-  });
+  const data = await fetch(
+    "https://ecommerce-api-l494.onrender.com/api/products",
+    {
+      next: { revalidate: 3 },
+    }
+  );
   const res = await data.json();
   return res;
 };

@@ -29,7 +29,7 @@ const ReviewInput = ({ productId }) => {
     try {
       setPostingReview(true);
       await fetch(
-        `https://techverse-dtq7.onrender.com/api/products/${productId}/reviews`,
+        `https://ecommerce-api-l494.onrender.com/api/products/${productId}/reviews`,
         {
           method: "POST",
           credentials: "include",

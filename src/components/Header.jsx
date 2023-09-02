@@ -18,7 +18,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 
 const logout = async () => {
-  await fetch("https://techverse-dtq7.onrender.com/api/users/logout", {
+  await fetch("https://ecommerce-api-l494.onrender.com/api/users/logout", {
     method: "POST",
     credentials: "include",
   });

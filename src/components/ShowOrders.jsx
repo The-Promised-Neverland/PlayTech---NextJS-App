@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const fetchUserOrders = async () => {
   const data = await fetch(
-    "https://techverse-dtq7.onrender.com/api/orders/myOrders",
+    "https://ecommerce-api-l494.onrender.com/api/orders/myOrders",
     {
       credentials: "include",
     }

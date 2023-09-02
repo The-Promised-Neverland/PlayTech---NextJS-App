@@ -1,12 +1,17 @@
-import React from 'react'
+import StripeTemplate from "@/components/gateways/Stripe";
+import React from "react";
 
-const page = () => {
-  return (
-    <div>
-      I am stripe
-      
-    </div>
-  )
-}
 
-export default page
+export const metadata = {
+  title: "Stripe",
+  icons: {
+    icon: "/gateways/paypal.ico",
+  },
+};
+
+
+const Stripe = () => {
+  return <StripeTemplate />;
+};
+
+export default Stripe;

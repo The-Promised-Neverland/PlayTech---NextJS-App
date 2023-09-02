@@ -15,7 +15,7 @@ import AddToCart from "@/components/AddToCart";
 
 const fetchProductDetail = async (productID) => {
   const data = await fetch(
-    `https://techverse-dtq7.onrender.com/api/products/${productID}`,
+    `https://ecommerce-api-l494.onrender.com/api/products/${productID}`,
     {
       next: { revalidate: 10 },
     }

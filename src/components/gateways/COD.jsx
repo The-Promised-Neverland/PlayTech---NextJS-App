@@ -18,22 +18,25 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const placeOrder = async (cart) => {
-  const data = await fetch("https://techverse-dtq7.onrender.com/api/orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      orderItems: cart.cartItems, //array
-      shippingAddress: cart.shippingAddress,
-      paymentMethod: cart.paymentMethod,
-      itemsPrice: cart.itemsPrice,
-      shippingPrice: cart.shippingPrice,
-      taxPrice: cart.taxPrice,
-      totalPrice: cart.totalPrice,
-    }),
-  });
+  const data = await fetch(
+    "https://ecommerce-api-l494.onrender.com/api/orders",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        orderItems: cart.cartItems, //array
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      }),
+    }
+  );
 
   const order = await data.json();
   return order;
@@ -45,9 +48,8 @@ const COD = () => {
 
   const placeOrderHandler = async () => {
     try {
-      const res = await placeOrder(cart);
-      console.log({ res });
-      router.replace(`/success?orderID=${res._id}`);
+      const order = await placeOrder(cart);
+      router.replace(`/success?orderID=${order._id}`);
     } catch (error) {
       toast.error(error);
     }

@@ -7,7 +7,7 @@ import Rating from "./Rating";
 
 const fetchReviews = async (productID) => {
   const data = await fetch(
-    `https://techverse-dtq7.onrender.com/api/products/${productID}`,
+    `https://ecommerce-api-l494.onrender.com/api/products/${productID}`,
     {
       cache: "no-store",
     }

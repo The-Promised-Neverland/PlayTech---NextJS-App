@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const fetchTopProducts = async () => {
   const data = await fetch(
-    "https://techverse-dtq7.onrender.com/api/products/top",
+    "https://ecommerce-api-l494.onrender.com/api/products/top",
     {
       next: { revalidate: 3 },
     }

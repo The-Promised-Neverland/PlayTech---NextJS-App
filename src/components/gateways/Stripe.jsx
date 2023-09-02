@@ -1,125 +1,78 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
   ListGroup,
   Image,
   Card,
+  Button,
   Spinner,
   ListGroupItem,
 } from "../ReactBootStrap";
-import {
-  PayPalButtons,
-  PayPalScriptProvider,
-  usePayPalScriptReducer,
-} from "@paypal/react-paypal-js";
-import { toast } from "react-toastify";
+import Message from "../Message";
 import { useSelector } from "react-redux";
-import React from "react";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
-const loadPayPalScript = async ({ paypal, paypalDispatch }) => {
-  paypalDispatch({
-    type: "resetOptions",
-    value: {
-      "client-id": paypal.clientId,
-      currency: "USD",
-    },
-  });
-  paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+const generateStripeSession = async ({ cart, userInfo }) => {
+  const data = await fetch(
+    "https://ecommerce-api-l494.onrender.com/api/create-checkout-session/stripe",
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderItems: cart.cartItems,
+        itemsPrice: cart.itemsPrice,
+        userID: userInfo._id,
+        shippingAddress: cart.shippingAddress,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+      }),
+    }
+  );
+  const session = await data.json();
+  return session;
 };
 
-const placeOrder = async ({ cart, details }) => {
-  const data = await fetch("https://techverse-dtq7.onrender.com/api/orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      orderItems: cart?.cartItems, //array
-      shippingAddress: cart?.shippingAddress,
-      paymentMethod: cart?.paymentMethod,
-      itemsPrice: cart?.itemsPrice,
-      shippingPrice: cart?.shippingPrice,
-      taxPrice: cart?.taxPrice,
-      totalPrice: cart?.totalPrice,
-      paymentDetails: details,
-    }),
-  });
-
-  const order = await data.json();
-  return order;
-};
-
-const PayPalScripter = () => {
+const StripeTemplate = () => {
   const router = useRouter();
 
-  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-
+  const [stripeError, setStripeError] = useState(null);
+  const [stripeLoading, setStripeLoading] = useState(true);
+  const [sessionURL, setSessionURL] = useState(null);
   const { userInfo } = useSelector((state) => state.auth);
-
   const cart = useSelector((state) => state.cart);
 
-  const injectPaypalScript = async () => {
-    const data = await fetch(
-      "https://ecommerce-api-l494.onrender.com/api/config/paypal",
-      {
-        credentials: "include",
-      }
-    );
-    const paypal = await data.json();
-    if (!window.paypal) {
-      loadPayPalScript(paypal, paypalDispatch);
-    }
-  };
-
   useEffect(() => {
-    if (!cart || cart?.cartItems.length === 0 || !userInfo) {
+    if (!cart || cart.cartItems.length === 0 || !userInfo) {
       router.replace("/");
     }
   }, [cart, userInfo]);
 
   useEffect(() => {
-    injectPaypalScript();
-  }, []);
-
-  function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
+    const loadStripeSession = async () => {
       try {
-        const order = await placeOrder({ cart, details });
-        router.replace(`/success?orderID=${order._id}`);
+        const session = await generateStripeSession({
+          cart,
+          userInfo,
+        });
+        setSessionURL(session.url);
+        console.log({ session });
+        setStripeLoading(false);
       } catch (error) {
-        toast.error(error?.data?.message || error.message);
+        setStripeError(true);
+        toast.error("Stripe is down");
       }
-    });
-  }
+    };
 
-  function onError(err) {
-    toast.error(err.message);
-  }
-
-  function createOrder(data, actions) {
-    return actions.order
-      .create({
-        purchase_units: [
-          {
-            amount: {
-              value: cart?.totalPrice,
-            },
-          },
-        ],
-      })
-      .then((order) => {
-        return order; // Return the order ID here
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  }
+    loadStripeSession();
+  }, []);
 
   return (
     <>
@@ -131,28 +84,28 @@ const PayPalScripter = () => {
           <ListGroup variant="flush">
             <ListGroupItem>
               <p>
-                <strong>Name: </strong> {userInfo?.name}
+                <strong>Name: </strong> {userInfo.name}
               </p>
               <p>
-                <strong>Email: </strong> {userInfo?.email}
+                <strong>Email: </strong> {userInfo.email}
               </p>
               <p>
                 <strong>Address: </strong>
-                {cart?.shippingAddress?.address}, {cart?.shippingAddress?.city}{" "}
-                {cart?.shippingAddress?.postalCode},{" "}
-                {cart?.shippingAddress?.country}
+                {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
+                {cart.shippingAddress.postalCode},{" "}
+                {cart.shippingAddress.country}
               </p>
             </ListGroupItem>
             <ListGroupItem>
               <h2>Payment Gateway</h2>
               <p>
                 <strong>Payment Platform: </strong>
-                {cart?.paymentMethod}
+                {cart.paymentMethod}
               </p>
             </ListGroupItem>
             <ListGroupItem>
               <h2>Order Items</h2>
-              {cart?.cartItems?.map((item, index) => (
+              {cart.cartItems.map((item, index) => (
                 <ListGroupItem key={index} style={{ border: "0px" }}>
                   <Row>
                     <Col
@@ -191,19 +144,19 @@ const PayPalScripter = () => {
               <ListGroupItem>
                 <Row>
                   <Col>MRP</Col>
-                  <Col>${cart?.itemsPrice}</Col>
+                  <Col>${cart.itemsPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
                   <Col>Shipping Price</Col>
-                  <Col>${cart?.shippingPrice}</Col>
+                  <Col>${cart.shippingPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
                   <Col>Tax Price</Col>
-                  <Col>${cart?.taxPrice}</Col>
+                  <Col>${cart.taxPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
@@ -211,13 +164,30 @@ const PayPalScripter = () => {
                   <Col>
                     <strong>Final Price</strong>
                   </Col>
-                  <Col>${cart?.totalPrice}</Col>
+                  <Col>${cart.totalPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                {isPending ? (
+                {stripeLoading === false ? (
+                  <>
+                    {stripeError ? (
+                      <Message variant="danger">Reload the page</Message>
+                    ) : (
+                      <Button
+                        style={{ padding: "0", border: "none" }}
+                        onClick={() => (window.location.href = sessionURL)}
+                      >
+                        <Image
+                          src="https://user-images.githubusercontent.com/157270/38515749-f53f8392-3be9-11e8-8917-61ef78dd354a.png"
+                          alt="Stripe"
+                          style={{ height: "4.2rem" }}
+                        />
+                      </Button>
+                    )}
+                  </>
+                ) : (
                   <div
                     style={{
                       display: "flex",
@@ -226,16 +196,8 @@ const PayPalScripter = () => {
                     }}
                   >
                     <Spinner animation="border" />
-                    <span>Loading PayPal...</span>
+                    <span>Loading Stripe...</span>
                   </div>
-                ) : (
-                  <ListGroupItem style={{ width: "100%", paddingBottom: "0" }}>
-                    <PayPalButtons
-                      createOrder={createOrder}
-                      onApprove={onApprove}
-                      onError={onError}
-                    />
-                  </ListGroupItem>
                 )}
               </ListGroupItem>
             </ListGroup>
@@ -246,11 +208,4 @@ const PayPalScripter = () => {
   );
 };
 
-const PaypalTemplate = () => {
-  return (
-    <PayPalScriptProvider>
-      <PayPalScripter />
-    </PayPalScriptProvider>
-  );
-};
-export default PaypalTemplate;
+export default StripeTemplate;

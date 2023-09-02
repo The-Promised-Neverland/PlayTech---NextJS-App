@@ -11,18 +11,19 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const login = async (email, password) => {
   const data = await fetch(
-    "https://techverse-dtq7.onrender.com/api/users/login",
+    "https://ecommerce-api-l494.onrender.com/api/users/login",
     {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", // stores the cookies sent from browser
       body: JSON.stringify({ email, password }),
     }
   );
-  const res = await data.json();
-  return res;
+  const status = data.status;
+  const userInfo = await data.json();
+  return { status, userInfo };
 };
 
 const Logger = () => {
@@ -48,10 +49,14 @@ const Logger = () => {
     e.preventDefault();
     try {
       setLoggingIn(true);
-      const res = await login(email, password);
-      console.log(userInfo, { ...res });
-      dispatch(setCredentialsLocal({ ...res }));
-      router.push(redirect);
+      const { status, userInfo } = await login(email, password);
+      console.log(status, { userInfo });
+      if (status === 401) {
+        toast.error("Wrong email or password");
+      } else {
+        dispatch(setCredentialsLocal({ ...userInfo }));
+        router.push(redirect);
+      }
     } catch (error) {
       toast.error(error?.data?.message || error.error);
     } finally {

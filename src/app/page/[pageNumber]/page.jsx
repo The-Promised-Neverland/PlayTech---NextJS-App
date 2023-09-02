@@ -5,7 +5,7 @@ import Paginate from "@/components/Paginate";
 import TopProductCarousel from "@/components/TopProductCarousel";
 
 const fetchAllProducts = async (pageNumber, keyword="") => {
-  const url = `https://techverse-dtq7.onrender.com/api/products?keyword=${encodeURIComponent(
+  const url = `https://ecommerce-api-l494.onrender.com/api/products?keyword=${encodeURIComponent(
     keyword
   )}&pageNumber=${pageNumber}`;
   const data = await fetch(url);

@@ -53,13 +53,12 @@ const PaymentSelector = () => {
             <FormCheck
               type="radio"
               className="my-2"
-              label="Stripe (Under development)"
+              label="Stripe"
               id="Stripe"
               name="paymentMethod"
               value="Stripe"
               defaultChecked={paymentMethod === "Stripe"}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              disabled
             />
           </Col>
           <Col>
