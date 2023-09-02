@@ -46,6 +46,7 @@ const StripeTemplate = () => {
   const [stripeError, setStripeError] = useState(null);
   const [stripeLoading, setStripeLoading] = useState(true);
   const [sessionURL, setSessionURL] = useState(null);
+
   const { userInfo } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
 
@@ -63,7 +64,7 @@ const StripeTemplate = () => {
           userInfo,
         });
         setSessionURL(session.url);
-        console.log({ session });
+        console.log(sessionURL)            
         setStripeLoading(false);
       } catch (error) {
         setStripeError(true);
@@ -73,6 +74,11 @@ const StripeTemplate = () => {
 
     loadStripeSession();
   }, []);
+
+
+  const stripeHandler = () => {
+    router.replace(sessionURL);
+  }
 
   return (
     <>
@@ -84,28 +90,28 @@ const StripeTemplate = () => {
           <ListGroup variant="flush">
             <ListGroupItem>
               <p>
-                <strong>Name: </strong> {userInfo.name}
+                <strong>Name: </strong> {userInfo?.name}
               </p>
               <p>
-                <strong>Email: </strong> {userInfo.email}
+                <strong>Email: </strong> {userInfo?.email}
               </p>
               <p>
                 <strong>Address: </strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
-                {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
+                {cart?.shippingAddress?.address}, {cart.shippingAddress?.city}{" "}
+                {cart?.shippingAddress?.postalCode},{" "}
+                {cart?.shippingAddress?.country}
               </p>
             </ListGroupItem>
             <ListGroupItem>
               <h2>Payment Gateway</h2>
               <p>
                 <strong>Payment Platform: </strong>
-                {cart.paymentMethod}
+                {cart?.paymentMethod}
               </p>
             </ListGroupItem>
             <ListGroupItem>
               <h2>Order Items</h2>
-              {cart.cartItems.map((item, index) => (
+              {cart?.cartItems.map((item, index) => (
                 <ListGroupItem key={index} style={{ border: "0px" }}>
                   <Row>
                     <Col
@@ -144,19 +150,19 @@ const StripeTemplate = () => {
               <ListGroupItem>
                 <Row>
                   <Col>MRP</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>${cart?.itemsPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
                   <Col>Shipping Price</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>${cart?.shippingPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
                   <Col>Tax Price</Col>
-                  <Col>${cart.taxPrice}</Col>
+                  <Col>${cart?.taxPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
@@ -164,7 +170,7 @@ const StripeTemplate = () => {
                   <Col>
                     <strong>Final Price</strong>
                   </Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${cart?.totalPrice}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem
@@ -177,7 +183,7 @@ const StripeTemplate = () => {
                     ) : (
                       <Button
                         style={{ padding: "0", border: "none" }}
-                        onClick={() => (window.location.href = sessionURL)}
+                        onClick={stripeHandler}
                       >
                         <Image
                           src="https://user-images.githubusercontent.com/157270/38515749-f53f8392-3be9-11e8-8917-61ef78dd354a.png"

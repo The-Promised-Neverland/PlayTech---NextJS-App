@@ -5,7 +5,7 @@ import React from "react";
 export const metadata = {
   title: "Stripe",
   icons: {
-    icon: "/gateways/paypal.ico",
+    icon: "/gateways/stripe.ico",
   },
 };
 
