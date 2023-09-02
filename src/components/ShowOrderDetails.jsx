@@ -14,21 +14,25 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import Message from "./Message";
 
-// const getOrderDetails = async ({ orderID, setOrder }) => {
-//   const data = await fetch(
-//     `https://ecommerce-api-l494.onrender.com/api/orders/${orderID}`,
-//     {
-//       credentials: "include",
-//     }
-//   );
-//   const order = await data.json();
-//   setOrder(order);
-//   return order;
-// };
+const getOrderDetails = async ({ orderID, setOrder }) => {
+  const data = await fetch(
+    `https://ecommerce-api-l494.onrender.com/api/orders/${orderID}`,
+    {
+      credentials: "include",
+    }
+  );
+  const order = await data.json();
+  setOrder(order);
+  return order;
+};
 
-const ShowOrderDetailComponent = ({ order}) => {
+const ShowOrderDetailComponent = ({ orderID }) => {
   const { userInfo } = useSelector((state) => state.auth);
+  const [order, setOrder] = useState(null);
 
+  useEffect(() => {
+    getOrderDetails({ orderID, setOrder });
+  });
 
   return (
     <>
